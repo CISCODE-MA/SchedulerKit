@@ -1,14 +1,14 @@
 {
-  "name": "@ciscode/nestjs-developerkit",
-  "version": "1.0.0",
-  "description": "Template for NestJS developer kits (npm packages).",
+  "name": "@ciscode/scheduler-kit",
+  "version": "0.0.0",
+  "description": "Typed job scheduler for NestJS. @Cron and @Interval and @Timeout decorators. Dynamic runtime scheduling. Concurrent execution guard.",
   "author": "CisCode",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CISCODE-MA/"
+    "url": "git+https://github.com/CISCODE-MA/SchedulerKit.git"
   },
   "license": "MIT",
   "files": [

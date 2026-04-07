@@ -3,8 +3,16 @@
   "compilerOptions": {
     "noEmit": false,
     "emitDeclarationOnly": false,
-    "outDir": "dist"
+    "outDir": "dist",
+    "module": "CommonJS",
+    "moduleResolution": "Node"
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["test", "**/*.spec.ts", "**/*.test.ts", "dist", "node_modules"]
+  "include": [
+    "src/index.ts",
+    "src/cron-expression.ts",
+    "src/cron-builder.ts",
+    "src/interfaces/scheduler.interface.ts",
+    "src/errors/duplicate-job.error.ts"
+  ],
+  "exclude": ["dist", "node_modules", "**/*.spec.ts", "**/*.test.ts"]
 }

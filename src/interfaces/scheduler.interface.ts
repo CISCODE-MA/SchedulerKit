@@ -32,6 +32,22 @@ export type ScheduledJob = {
   handler: () => Promise<void> | void;
 } & ScheduleTiming;
 
+// ─── ScheduledJobStatus ──────────────────────────────────────────────────────
+// Runtime snapshot of a registered job's state.
+
+export type ScheduledJobStatus = {
+  /** Unique job name. */
+  name: string;
+  /** Cron expression if the job is cron-based, undefined otherwise. */
+  cron: string | undefined;
+  /** ISO timestamp of the last execution, or undefined if never run. */
+  lastRun: string | undefined;
+  /** ISO timestamp of the next scheduled execution, or undefined for one-shot/interval jobs. */
+  nextRun: string | undefined;
+  /** True while the job handler is actively executing. */
+  isRunning: boolean;
+};
+
 // ─── IScheduler ────────────────────────────────────────────────────────────────
 // The public contract that SchedulerService implements.
 
@@ -47,4 +63,10 @@ export interface IScheduler {
 
   /** Return a snapshot of all currently registered job names. */
   list(): string[];
+
+  /** Return the runtime status of a single job, or undefined if not found. */
+  status(name: string): ScheduledJobStatus | undefined;
+
+  /** Return the runtime status of all registered jobs. */
+  listStatus(): ScheduledJobStatus[];
 }

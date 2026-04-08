@@ -5,11 +5,40 @@ import "reflect-metadata";
 // ============================================================================
 
 // ============================================================================
+// MODULE
+// ============================================================================
+export { SchedulerModule } from "./scheduler.module";
+export type { SchedulerModuleAsyncOptions } from "./scheduler.module";
+
+// ============================================================================
+// SERVICE
+// ============================================================================
+export { SchedulerService } from "./services/scheduler.service";
+export type { SchedulerModuleOptions } from "./services/scheduler.service";
+
+// ============================================================================
+// DECORATORS
+// ============================================================================
+export {
+  Cron,
+  Interval,
+  Timeout,
+  CISCODE_SCHEDULER_METADATA,
+} from "./decorators/scheduler.decorators";
+export type {
+  SchedulerMetadata,
+  CronMetadata,
+  IntervalMetadata,
+  TimeoutMetadata,
+} from "./decorators/scheduler.decorators";
+
+// ============================================================================
 // INTERFACES & TYPES
 // ============================================================================
 export type {
   IScheduler,
   ScheduledJob,
+  ScheduledJobStatus,
   ScheduleTiming,
   CronSchedule,
   IntervalSchedule,

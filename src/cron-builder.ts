@@ -35,8 +35,8 @@ const DAY_MAP: Record<DayOfWeek, number> = {
 function parseTime(time: string): { hour: number; minute: number } {
   const ampm = /^(\d{1,2})(?::(\d{2}))?(am|pm)$/i.exec(time.trim());
   if (ampm) {
-    let hour = parseInt(ampm[1] as string, 10);
-    const minute = ampm[2] ? parseInt(ampm[2], 10) : 0;
+    let hour = Number.parseInt(ampm[1] as string, 10);
+    const minute = ampm[2] ? Number.parseInt(ampm[2], 10) : 0;
     const period = (ampm[3] as string).toLowerCase();
     if (period === "pm" && hour !== 12) hour += 12;
     if (period === "am" && hour === 12) hour = 0;
@@ -44,7 +44,10 @@ function parseTime(time: string): { hour: number; minute: number } {
   }
   const h24 = /^(\d{1,2}):(\d{2})$/.exec(time.trim());
   if (h24) {
-    return { hour: parseInt(h24[1] as string, 10), minute: parseInt(h24[2] as string, 10) };
+    return {
+      hour: Number.parseInt(h24[1] as string, 10),
+      minute: Number.parseInt(h24[2] as string, 10),
+    };
   }
   throw new Error(`Cannot parse time: "${time}". ` + `Use "9am", "9:30pm", "14:30", etc.`);
 }

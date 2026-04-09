@@ -16,22 +16,34 @@ function getMeta(target: object, method: string): SchedulerMetadata | undefined 
 
 class TestClass {
   @Cron("0 * * * *", "hourly")
-  cronWithName() {}
+  cronWithName() {
+    // stub: decorator metadata test only
+  }
 
   @Cron("*/5 * * * *")
-  cronNoName() {}
+  cronNoName() {
+    // stub: decorator metadata test only
+  }
 
   @Interval(5000, "heartbeat")
-  intervalWithName() {}
+  intervalWithName() {
+    // stub: decorator metadata test only
+  }
 
   @Interval(1000)
-  intervalNoName() {}
+  intervalNoName() {
+    // stub: decorator metadata test only
+  }
 
   @Timeout(3000, "startup")
-  timeoutWithName() {}
+  timeoutWithName() {
+    // stub: decorator metadata test only
+  }
 
   @Timeout(500)
-  timeoutNoName() {}
+  timeoutNoName() {
+    // stub: decorator metadata test only
+  }
 }
 
 const proto = TestClass.prototype as object;

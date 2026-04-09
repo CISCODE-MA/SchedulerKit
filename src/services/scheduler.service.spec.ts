@@ -243,4 +243,105 @@ describe("SchedulerService", () => {
       errorService.unschedule("good");
     });
   });
+
+  // ─── status() ───────────────────────────────────────────────────────────────
+
+  describe("status()", () => {
+    it("returns undefined for unknown job", () => {
+      expect(service.status("ghost")).toBeUndefined();
+    });
+
+    it("returns status for a registered interval job", async () => {
+      const handler = jest.fn().mockResolvedValue(undefined);
+      service.schedule({ name: "s1", handler, interval: 1000 });
+
+      const s = service.status("s1");
+      expect(s).toMatchObject({ name: "s1", isRunning: false, cron: undefined });
+    });
+
+    it("reflects lastRun after handler completes", async () => {
+      const handler = jest.fn().mockResolvedValue(undefined);
+      service.schedule({ name: "s2", handler, interval: 1000 });
+
+      await jest.advanceTimersByTimeAsync(1000);
+      const s = service.status("s2");
+      expect(s?.lastRun).toBeDefined();
+    });
+
+    it("isRunning is true while handler is executing", async () => {
+      let resolveHandler!: () => void;
+      const handler = jest.fn(
+        () =>
+          new Promise<void>((resolve) => {
+            resolveHandler = resolve;
+          }),
+      );
+      service.schedule({ name: "s3", handler, interval: 1000 });
+
+      jest.advanceTimersByTime(1000);
+      await Promise.resolve();
+
+      expect(service.status("s3")?.isRunning).toBe(true);
+      resolveHandler();
+      await Promise.resolve();
+    });
+  });
+
+  // ─── listStatus() ───────────────────────────────────────────────────────────
+
+  describe("listStatus()", () => {
+    it("returns empty array when no jobs registered", () => {
+      expect(service.listStatus()).toEqual([]);
+    });
+
+    it("returns one entry per registered job", () => {
+      service.schedule({ name: "a", handler: jest.fn(), interval: 1000 });
+      service.schedule({ name: "b", handler: jest.fn(), interval: 2000 });
+      const statuses = service.listStatus();
+      expect(statuses).toHaveLength(2);
+      expect(statuses.map((s) => s.name)).toEqual(expect.arrayContaining(["a", "b"]));
+    });
+  });
+
+  // ─── cron jobs ──────────────────────────────────────────────────────────────
+
+  describe("cron execution", () => {
+    it("registers a cron job and it appears in list", () => {
+      service.schedule({ name: "cron-job", handler: jest.fn(), cron: "* * * * * *" });
+      expect(service.list()).toContain("cron-job");
+    });
+
+    it("status returns cron expression for cron jobs", () => {
+      service.schedule({ name: "cron-job2", handler: jest.fn(), cron: "* * * * * *" });
+      const s = service.status("cron-job2");
+      expect(s?.cron).toBe("* * * * * *");
+    });
+
+    it("unschedule stops the cron job", () => {
+      service.schedule({ name: "cron-stop", handler: jest.fn(), cron: "* * * * * *" });
+      expect(() => service.unschedule("cron-stop")).not.toThrow();
+      expect(service.list()).not.toContain("cron-stop");
+    });
+  });
+
+  // ─── default onJobError ─────────────────────────────────────────────────────
+
+  describe("default onJobError", () => {
+    it("uses Logger.error when no onJobError provided", async () => {
+      const defaultService = new SchedulerService();
+      const logSpy = jest.spyOn(defaultService["logger"], "error").mockImplementation(() => {});
+
+      defaultService.schedule({
+        name: "default-err",
+        handler: jest.fn().mockRejectedValue(new Error("default")),
+        interval: 100,
+      });
+
+      jest.advanceTimersByTime(100);
+      await Promise.resolve();
+
+      expect(logSpy).toHaveBeenCalled();
+      defaultService.unschedule("default-err");
+    });
+  });
 });

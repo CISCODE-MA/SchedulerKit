@@ -9,13 +9,9 @@
   },
   "include": [
     "src/index.ts",
-    "src/cron-expression.ts",
-    "src/cron-builder.ts",
     "src/interfaces/scheduler.interface.ts",
     "src/errors/duplicate-job.error.ts",
-    "src/decorators/scheduler.decorators.ts",
-    "src/services/scheduler.service.ts",
-    "src/scheduler.module.ts"
+    "src/services/scheduler.service.ts"
   ],
   "exclude": ["dist", "node_modules", "**/*.spec.ts", "**/*.test.ts"]
 }

@@ -25,7 +25,9 @@ describe("SchedulerModule", () => {
     it("auto-registers @Cron decorated method with default name", () => {
       class MyJobs {
         @Cron("0 * * * *")
-        async doWork() {}
+        async doWork() {
+          // stub: auto-discovery test only
+        }
       }
       const mod = new SchedulerModule(service, scanner, [new MyJobs()]);
       mod.onModuleInit();
@@ -35,7 +37,9 @@ describe("SchedulerModule", () => {
     it("auto-registers @Cron decorated method with explicit name", () => {
       class MyJobs {
         @Cron("0 * * * *", "hourly")
-        async doWork() {}
+        async doWork() {
+          // stub: auto-discovery test only
+        }
       }
       const mod = new SchedulerModule(service, scanner, [new MyJobs()]);
       mod.onModuleInit();
@@ -45,7 +49,9 @@ describe("SchedulerModule", () => {
     it("auto-registers @Interval decorated method", () => {
       class MyJobs {
         @Interval(1000, "heartbeat")
-        async ping() {}
+        async ping() {
+          // stub: auto-discovery test only
+        }
       }
       const mod = new SchedulerModule(service, scanner, [new MyJobs()]);
       mod.onModuleInit();
@@ -55,7 +61,9 @@ describe("SchedulerModule", () => {
     it("auto-registers @Timeout decorated method", () => {
       class MyJobs {
         @Timeout(500, "startup")
-        async init() {}
+        async init() {
+          // stub: auto-discovery test only
+        }
       }
       const mod = new SchedulerModule(service, scanner, [new MyJobs()]);
       mod.onModuleInit();
@@ -64,7 +72,9 @@ describe("SchedulerModule", () => {
 
     it("ignores methods without scheduler metadata", () => {
       class MyJobs {
-        async plainMethod() {}
+        async plainMethod() {
+          // stub: no decorator — should be ignored by discovery
+        }
       }
       const mod = new SchedulerModule(service, scanner, [new MyJobs()]);
       mod.onModuleInit();
@@ -96,7 +106,9 @@ describe("SchedulerModule", () => {
     });
 
     it("accepts provider classes", () => {
-      class MyJobs {}
+      class MyJobs {
+        // stub: empty provider class for module registration test
+      }
       const result = SchedulerModule.register({}, [MyJobs]);
       expect(result.providers).toEqual(expect.arrayContaining([MyJobs]));
     });

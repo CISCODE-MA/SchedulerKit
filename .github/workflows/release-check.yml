@@ -1,8 +1,8 @@
 name: CI - Release Check
 
 on:
-  # pull_request:
-  #   branches: [master]
+  pull_request:
+    branches: [master]
   workflow_dispatch:
 
 concurrency:
@@ -17,9 +17,9 @@ jobs:
 
     # Config stays in the workflow file (token stays in repo secrets)
     env:
-      SONAR_HOST_URL: 'https://sonarcloud.io'
-      SONAR_ORGANIZATION: 'ciscode'
-      SONAR_PROJECT_KEY: 'CISCODE-MA_...'
+      SONAR_HOST_URL: "https://sonarcloud.io"
+      SONAR_ORGANIZATION: "ciscode"
+      SONAR_PROJECT_KEY: "CISCODE-MA_SchedulerKit"
 
     steps:
       - name: Checkout
@@ -30,8 +30,8 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
-          cache: 'npm'
+          node-version: "22"
+          cache: "npm"
 
       - name: Install
         run: npm ci

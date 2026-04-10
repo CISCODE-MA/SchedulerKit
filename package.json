@@ -1,6 +1,6 @@
 {
   "name": "@ciscode/scheduler-kit",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "NestJS advanced scheduler wrapper with dynamic control and concurrency guards.",
   "author": "CisCode",
   "publishConfig": {
